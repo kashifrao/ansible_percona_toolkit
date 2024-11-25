@@ -1,0 +1,19 @@
+
+    - name: Creates directory
+      ansible.builtin.file:
+        path: /usr/src/percona
+        state: directory
+        owner: ansible-c
+        group: ans-admin
+        mode: 0775
+        recurse: yes
+      become_user: root
+ 
+    - name: "Copy percona rpm from storage "
+      shell: if [ ! -f /usr/src/percona/percona-toolkit-3.6.0-1.el8.x86_64.rpm ]; then sudo cp -r /srv/shared-mgmt/external-softwares/percona-toolkit-3.6.0-1.el8.x86_64.rpm /usr/src/percona/ ; else echo "" ; fi
+      become_user: root
+
+
+    - name: Install percona
+      shell: sudo yum -y install /usr/src/percona/percona-toolkit-3.6.0-1.el8.x86_64.rpm
+      become_user: root
